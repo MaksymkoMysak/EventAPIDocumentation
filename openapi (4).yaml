@@ -1,0 +1,365 @@
+openapi: 3.0.1
+info:
+  title: Event
+  description: >-
+    Створити сервіс для календаря подій. Користувач має можливість створювати подію, редагувати її, видаляти, долучати інших користувачів до події, переглядати перелік всіх створених події, та подій до яких він долучений. .
+  contact:
+    name: Mysak Maksym
+    email: max.mysak2001@gmail.com
+  version: '1.0'
+servers:
+  - url: 'https://localhost:5000/api/v1.0/'
+  - url: 'http://localhost:5000/api/v1.0/'
+tags:
+  - name: user
+    description: Information about user
+  - name: event
+    description: All created events by user
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: Getting all information about 
+      responses:
+        '200':
+          description: user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - user
+      summary: Creating of new user
+      parameters:
+        - name: api_key
+          in: header
+          description: user key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid data
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '406':
+          description: Not acceptable
+          content: {}
+      x-codegen-request-body-name: body
+  '/users/{id}':
+    get:
+      tags:
+        - user
+      summary: Getting information about user
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+          content: {}
+    put:
+      tags:
+        - user
+      summary: Data updating
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+        - name: api_key
+          in: header
+          description: user key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid data
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '406':
+          description: Not Acceptable
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+        - name: api_key
+          in: header
+          description: user key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful deleting
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '406':
+          description: Not Acceptable
+          content: {}
+  /event:
+    post:
+      tags:
+        - event
+      summary: Creating of new event
+      parameters:
+        - name: api_key
+          in: header
+          description: user id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: event object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        '200':
+          description: event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid data
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '406':
+          description: Not Acceptable
+          content: {}
+      x-codegen-request-body-name: body
+    put:
+      tags:
+        - event
+      summary: Adding participant to event
+      parameters:
+        - name: eventID
+          in: path
+          description: eventID
+          required: true
+          schema:
+            type: integer
+        - name: userID
+          in: header
+          description: userID
+          required: true
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid data
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '406':
+          description: Not Acceptable
+          content: {}
+      x-codegen-request-body-name: body
+  '/event/{id}':
+    get:
+      tags:
+        - event
+      summary: Getting information about event
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Not Found
+          content: {}
+    put:
+      tags:
+        - event
+      summary: refresh information about event
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+        - name: api_key
+          in: header
+          description: user id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: event object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        '200':
+          description: event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid data
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '406':
+          description: Not Acceptable
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - event
+      summary: Deleting of event
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+        - name: api_key
+          in: header
+          description: user id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '406':
+          description: Not Acceptable
+          content: {}
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        number of created events:
+          type: integer
+          format: int64
+        number of participating events:
+          type: integer
+          format: int64
+    Event:
+      type: object
+      properties:
+        name:
+          type: string
+        event_id:
+          type: integer
+          format: int64
+        creator_id:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+        location:
+          type: string
+        number of participants:
+          type: integer
+          format: int64
